@@ -40,5 +40,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BusinessObjects\Personen Konto\Person\" />
+    <Folder Include="txtFiles\" />
   </ItemGroup>
 </Project>

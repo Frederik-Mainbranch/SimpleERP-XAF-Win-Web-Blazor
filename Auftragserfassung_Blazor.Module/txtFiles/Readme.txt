@@ -1,0 +1,1 @@
+add this files to the correct location on your pc, because some helpers or controllers don´t work properly!!
