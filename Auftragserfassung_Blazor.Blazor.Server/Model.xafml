@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application PreferredLanguage="de" Title="Auftragserfassung Blazor">
+  <SchemaModules>
+    <SchemaModule Name="SystemModule" Version="21.1.4.0" IsNewNode="True" />
+  </SchemaModules>
+  <Views>
+    <ListView Id="Artikel_ListView" ShowAutoFilterRow="True" />
+  </Views>
+</Application>

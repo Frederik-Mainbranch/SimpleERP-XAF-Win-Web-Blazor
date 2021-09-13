@@ -1,0 +1,747 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application Title="Auftragserfassung_Blazor">
+  <BOModel>
+    <Class Name="Auftragserfassung_Blazor.Module.BusinessObjects.Artikel">
+      <OwnMembers>
+        <Member Name="AktuellerPreis" DisplayFormat="{0:#,###,##0.00 €}" EditMask="" />
+        <Member Name="AktuellerRabatt" DisplayFormat="{0:#,###,##0.# '%'}" EditMask="" />
+        <Member Name="StandardPreis" DisplayFormat="{0:#,###,##0.00 €}" EditMask="" />
+        <Member Name="Steuersatz" DisplayFormat="{0:#,###,##0.# '%'}" NullText="Steuersatz der Artikelgruppe/Untergruppe" />
+      </OwnMembers>
+    </Class>
+    <Class Name="Auftragserfassung_Blazor.Module.BusinessObjects.ArtikelGruppe">
+      <OwnMembers>
+        <Member Name="AktuellerRabatt" DisplayFormat="{0:#,###,##0.# '%'}" EditMask="#,###,##0.#" />
+        <Member Name="Steuersatz" EditMask="##0.# '%'" />
+      </OwnMembers>
+    </Class>
+    <Class Name="Auftragserfassung_Blazor.Module.BusinessObjects.ArtikelUntergruppe">
+      <OwnMembers>
+        <Member Name="AktuellerRabatt" DisplayFormat="{0:#,###,##0.# '%'}" EditMask="#,###,##0.#" />
+        <Member Name="Steuersatz" EditMask="##0.# " NullText="Steuersatz der Artikelgruppe" />
+      </OwnMembers>
+    </Class>
+    <Class Name="Auftragserfassung_Blazor.Module.BusinessObjects.BelegPosition">
+      <AppearanceRules>
+        <AppearanceRule Id="Zeilenrabatt_grün" Priority="0" TargetItems="Zeilenrabatt" Criteria="[Zeilenrabatt] &lt; 0.0" BackColor="128, 255, 128" IsNewNode="True" />
+        <AppearanceRule Id="Zeilenrabatt_rot" TargetItems="Zeilenrabatt" Criteria="[Zeilenrabatt] &gt; 0.0" BackColor="255, 128, 128" IsNewNode="True" />
+      </AppearanceRules>
+      <OwnMembers>
+        <Member Name="Artikel_Preis" DisplayFormat="{0:#,###,##0.00 €}" EditMask="#,###,##0.##" />
+        <Member Name="Artikel_Steuersatz" Caption="Steuersatz" DisplayFormat="{0:#,###,##0.# '%'}" />
+        <Member Name="SummeDerPositionBrutto_NP" DisplayFormat="{0:#,###,##0.00 €}" EditMask="#,###,##0.##" />
+        <Member Name="SummeDerPositionNetto_NP" DisplayFormat="{0:#,###,##0.00 €}" EditMask="#,###,##0.##" />
+        <Member Name="Zeilenrabatt" DisplayFormat="{0:#,###,##0.# '%'}" EditMask="#,###,##0.#" />
+      </OwnMembers>
+    </Class>
+    <Class Name="Auftragserfassung_Blazor.Module.BusinessObjects.Steuer">
+      <OwnMembers>
+        <Member Name="AktuellerSteuersatz" DisplayFormat="{0:#,###,##0.# '%'}" EditMask="##0.#" />
+        <Member Name="StandardSteuersatz" EditMask="##0.#" DisplayFormat="{0:#,###,##0.# '%'}" />
+      </OwnMembers>
+    </Class>
+  </BOModel>
+  <NavigationItems>
+    <Items>
+      <Item Id="Artikel" IsNewNode="True">
+        <Items IsNewNode="True">
+          <Item Id="Artikel_ListView" ViewId="Artikel_ListView" ObjectKey="" IsNewNode="True" />
+          <Item Id="ArtikelGruppe_ListView" ViewId="ArtikelGruppe_ListView" ObjectKey="" IsNewNode="True" />
+        </Items>
+      </Item>
+      <Item Id="Belege" IsNewNode="True">
+        <Items IsNewNode="True">
+          <Item Id="Bestellung_ListView" ViewId="Bestellung_ListView" ObjectKey="" IsNewNode="True" />
+          <Item Id="LieferantenLieferung_ListView" ViewId="LieferantenLieferung_ListView" ObjectKey="" IsNewNode="True" />
+          <Item Id="Lieferschein_ListView" ViewId="Lieferschein_ListView" ObjectKey="" IsNewNode="True" />
+        </Items>
+      </Item>
+      <Item Id="Default">
+        <Items>
+          <Item Id="Aktion_ListView" Removed="True" />
+          <Item Id="Aktionspreis_ListView" Removed="True" />
+          <Item Id="Aktionsrabatt_ListView" Removed="True" />
+          <Item Id="Artikel_ListView" Removed="True" />
+          <Item Id="ArtikelGruppe_ListView" Removed="True" />
+          <Item Id="ArtikelUntergruppe_ListView" Removed="True" />
+          <Item Id="Beleg_ListView" Removed="True" />
+          <Item Id="BelegPosition_ListView" Removed="True" />
+          <Item Id="Bestellung_ListView" Removed="True" />
+          <Item Id="BestellungsPosition_ListView" Removed="True" />
+          <Item Id="Kunde_ListView" Removed="True" />
+          <Item Id="Lager_ArtikeLager_Zugehoerigkeit_ListView" Removed="True" />
+          <Item Id="Lager_ListView" Removed="True" />
+          <Item Id="Lagerplatz_ListView" Removed="True" />
+          <Item Id="Lieferant_ListView" Removed="True" />
+          <Item Id="LieferantenLieferung_ListView" Removed="True" />
+          <Item Id="LieferantenLieferungPosition_ListView" Removed="True" />
+          <Item Id="Lieferschein_ListView" Removed="True" />
+          <Item Id="LieferscheinPosition_ListView" Removed="True" />
+          <Item Id="PersonenKonto_ListView" Removed="True" />
+          <Item Id="Steuer_ListView" Removed="True" />
+          <Item Id="VoruebergehendeSteuer_ListView" Removed="True" />
+          <Item Id="Waren_Ausgang_ListView" Removed="True" />
+          <Item Id="Waren_Bewegung_ListView" Removed="True" />
+          <Item Id="Waren_Eingang_ListView" Removed="True" />
+        </Items>
+      </Item>
+      <Item Id="Einstellungen" IsNewNode="True">
+        <Items IsNewNode="True">
+          <Item Id="Steuer_ListView" ViewId="Steuer_ListView" ObjectKey="" IsNewNode="True" />
+        </Items>
+      </Item>
+      <Item Id="Lager" IsNewNode="True">
+        <Items IsNewNode="True">
+          <Item Id="Lager_ListView" ViewId="Lager_ListView" ObjectKey="" IsNewNode="True" />
+          <Item Id="Waren_Ausgang_ListView" ViewId="Waren_Ausgang_ListView" ObjectKey="" IsNewNode="True" />
+          <Item Id="Waren_Bewegung_ListView" ViewId="Waren_Bewegung_ListView" ObjectKey="" IsNewNode="True" />
+          <Item Id="Waren_Eingang_ListView" ViewId="Waren_Eingang_ListView" ObjectKey="" IsNewNode="True" />
+        </Items>
+      </Item>
+      <Item Id="Personen Konto" IsNewNode="True">
+        <Items IsNewNode="True">
+          <Item Id="Kunde_ListView" ViewId="Kunde_ListView" ObjectKey="" IsNewNode="True" />
+          <Item Id="Lieferant_ListView" ViewId="Lieferant_ListView" ObjectKey="" IsNewNode="True" />
+        </Items>
+      </Item>
+      <Item Id="Versteckt">
+        <Items>
+          <Item Id="Aktion_ListView" ViewId="Aktion_ListView" ObjectKey="" IsNewNode="True" />
+          <Item Id="Aktionspreis_ListView" ViewId="Aktionspreis_ListView" ObjectKey="" IsNewNode="True" />
+          <Item Id="Aktionsrabatt_ListView" ViewId="Aktionsrabatt_ListView" ObjectKey="" IsNewNode="True" />
+          <Item Id="ArtikelUntergruppe_ListView" ViewId="ArtikelUntergruppe_ListView" ObjectKey="" IsNewNode="True" />
+          <Item Id="Beleg_ListView" ViewId="Beleg_ListView" ObjectKey="" IsNewNode="True" />
+          <Item Id="BelegPosition_ListView" ViewId="BelegPosition_ListView" ObjectKey="" IsNewNode="True" />
+          <Item Id="BestellungsPosition_ListView" ViewId="BestellungsPosition_ListView" ObjectKey="" IsNewNode="True" />
+          <Item Id="Lager_ArtikeLager_Zugehoerigkeit_ListView" ViewId="Lager_ArtikeLager_Zugehoerigkeit_ListView" ObjectKey="" IsNewNode="True" />
+          <Item Id="Lagerplatz_ListView" ViewId="Lagerplatz_ListView" ObjectKey="" IsNewNode="True" />
+          <Item Id="LieferantenLieferungPosition_ListView" ViewId="LieferantenLieferungPosition_ListView" ObjectKey="" IsNewNode="True" />
+          <Item Id="LieferscheinPosition_ListView" ViewId="LieferscheinPosition_ListView" ObjectKey="" IsNewNode="True" />
+          <Item Id="PersonenKonto_ListView" ViewId="PersonenKonto_ListView" ObjectKey="" IsNewNode="True" />
+          <Item Id="VoruebergehendeSteuer_ListView" ViewId="VoruebergehendeSteuer_ListView" ObjectKey="" IsNewNode="True" />
+        </Items>
+      </Item>
+    </Items>
+  </NavigationItems>
+  <Options>
+    <LayoutManagerOptions RequiredFieldMark="*" />
+  </Options>
+  <SchemaModules>
+    <SchemaModule Name="SystemModule" Version="21.1.4.0" IsNewNode="True" />
+  </SchemaModules>
+  <Views>
+    <DetailView Id="Artikel_DetailView">
+      <Items>
+        <PropertyEditor Id="ArtikelUntergruppe" PropertyName="ArtikelUntergruppe" IsNewNode="True" />
+        <PropertyEditor Id="Oid" Removed="True" />
+      </Items>
+      <Layout>
+        <LayoutGroup Id="Main" RelativeSize="100">
+          <LayoutGroup Id="SimpleEditors" RelativeSize="100">
+            <TabbedGroup Id="Item1" CaptionLocation="Top" Index="0" RelativeSize="100" IsNewNode="True">
+              <LayoutGroup Id="Artikel" ShowCaption="True" Direction="Vertical" Index="0" RelativeSize="100" Caption="Übersicht" IsNewNode="True">
+                <LayoutGroup Id="Auto2f588324-00c9-449a-bf3e-bd0913fbb1f6" ShowCaption="False" Caption="Auto2f588324-00c9-449a-bf3e-bd0913fbb1f6(5)" Direction="Horizontal" Index="0" RelativeSize="13.313896987366375" IsNewNode="True">
+                  <LayoutGroup Id="Artikel_col1" ShowCaption="False" Index="0" RelativeSize="49.95224450811843" IsNewNode="True">
+                    <LayoutItem Id="Bezeichnung" ViewItem="Bezeichnung" Index="0" RelativeSize="24.817518248175183" IsNewNode="True" />
+                    <LayoutItem Id="ArtikelGruppe" ViewItem="ArtikelGruppe" Index="1" RelativeSize="17.51824817518248" IsNewNode="True" />
+                    <LayoutItem Id="StandardPreis" ViewItem="StandardPreis" Index="2" RelativeSize="17.51824817518248" IsNewNode="True" />
+                    <LayoutItem Id="AktuellerRabatt" ViewItem="AktuellerRabatt" Index="3" RelativeSize="17.51824817518248" IsNewNode="True" />
+                    <LayoutItem Id="BenutzteGruppenRabatte" ViewItem="BenutzteGruppenRabatte" Index="4" RelativeSize="22.62773722627737" IsNewNode="True" />
+                  </LayoutGroup>
+                  <LayoutGroup Id="Artikel_col2" ShowCaption="False" Index="1" RelativeSize="50.04775549188157" Caption="Artikel_col2" IsNewNode="True">
+                    <LayoutItem Id="Steuersatz" ViewItem="Steuersatz" Index="0" RelativeSize="24.817518248175183" IsNewNode="True" />
+                    <LayoutItem Id="ArtikelUntergruppe" ViewItem="ArtikelUntergruppe" Index="1" RelativeSize="17.51824817518248" IsNewNode="True" />
+                    <LayoutItem Id="AktuellerPreis" ViewItem="AktuellerPreis" Index="2" RelativeSize="17.51824817518248" IsNewNode="True" />
+                    <LayoutItem Id="AngewandterRabatt" ViewItem="AngewandterRabatt" Index="3" RelativeSize="17.51824817518248" IsNewNode="True" />
+                    <LayoutItem Id="BenutzeUntergruppenRabatte" ViewItem="BenutzeUntergruppenRabatte" Index="4" RelativeSize="22.62773722627737" IsNewNode="True" />
+                  </LayoutGroup>
+                </LayoutGroup>
+                <LayoutGroup Id="LieferantenListe" ShowCaption="True" Caption="Lieferanten Liste" Index="1" RelativeSize="86.68610301263362" IsNewNode="True">
+                  <LayoutItem Id="LieferantenListe" ViewItem="LieferantenListe" Index="0" RelativeSize="100" IsNewNode="True" />
+                </LayoutGroup>
+              </LayoutGroup>
+              <LayoutGroup Id="Item2" ShowCaption="True" CaptionLocation="Top" Direction="Vertical" Index="1" Caption="Aktionen" RelativeSize="100" IsNewNode="True">
+                <TabbedGroup Id="Item4" CaptionLocation="Top" Index="0" RelativeSize="100" IsNewNode="True">
+                  <LayoutGroup Id="AktionspreiseListe" ShowCaption="True" Caption="Aktionspreise" Index="0" RelativeSize="100" Direction="Vertical" IsNewNode="True">
+                    <LayoutItem Id="AktionspreiseListe" ViewItem="AktionspreiseListe" Index="0" RelativeSize="49.899799599198396" IsNewNode="True" />
+                    <LayoutGroup Id="Item5" ShowCaption="True" Caption="Aktionsrabatte" CaptionLocation="Top" Index="1" RelativeSize="50.100200400801604" IsNewNode="True">
+                      <LayoutItem Id="AktionsrabatteListe" ViewItem="AktionsrabatteListe" Index="0" RelativeSize="100" IsNewNode="True" />
+                    </LayoutGroup>
+                  </LayoutGroup>
+                </TabbedGroup>
+              </LayoutGroup>
+              <LayoutGroup Id="Item3" ShowCaption="True" CaptionLocation="Top" Direction="Vertical" Index="2" Caption="Lager" RelativeSize="100" IsNewNode="True">
+                <LayoutGroup Id="Autoe5f9c8d7-0507-4e6e-88bf-b6bdb1bfffde" ShowCaption="False" Caption="" Direction="Horizontal" Index="0" RelativeSize="7.968901846452867" IsNewNode="True">
+                  <LayoutGroup Id="Auto02b4ae84-aead-4d1a-af6a-f7bc40872ed7" ShowCaption="False" Caption="" Index="0" RelativeSize="49.95224450811843" IsNewNode="True">
+                    <LayoutItem Id="AnzahlVerfuegbar" ViewItem="AnzahlVerfuegbar" Index="0" RelativeSize="41.46341463414634" IsNewNode="True" />
+                    <LayoutItem Id="AnzahlImLager" ViewItem="AnzahlImLager" Index="1" RelativeSize="29.26829268292683" IsNewNode="True" />
+                    <LayoutItem Id="AnzahlBestelltBeimLieferanten" ViewItem="AnzahlBestelltBeimLieferanten" Index="2" RelativeSize="29.26829268292683" IsNewNode="True" />
+                  </LayoutGroup>
+                  <LayoutGroup Id="Auto5a733691-a93c-43f8-8720-2f12be2c7ef7" ShowCaption="False" Caption="" Index="1" RelativeSize="50.04775549188157" IsNewNode="True">
+                    <LayoutItem Id="AnzahlFehlmenge" ViewItem="AnzahlFehlmenge" Index="0" RelativeSize="41.46341463414634" IsNewNode="True" />
+                    <LayoutItem Id="AnzahlReserviert" ViewItem="AnzahlReserviert" Index="1" RelativeSize="29.26829268292683" IsNewNode="True" />
+                    <LayoutItem Id="AnzahlImVersandprozess" ViewItem="AnzahlImVersandprozess" Index="2" RelativeSize="29.26829268292683" IsNewNode="True" />
+                  </LayoutGroup>
+                </LayoutGroup>
+                <TabbedGroup Id="Item6" CaptionLocation="Top" Index="1" RelativeSize="92.03109815354713" IsNewNode="True">
+                  <LayoutGroup Id="LagerplatzListe" ShowCaption="True" Caption="Lagerplätze" Direction="Vertical" Index="0" RelativeSize="100" IsNewNode="True">
+                    <LayoutItem Id="LagerplatzListe" ViewItem="LagerplatzListe" Index="0" RelativeSize="100" IsNewNode="True" />
+                  </LayoutGroup>
+                  <LayoutGroup Id="Item7" ShowCaption="True" CaptionLocation="Top" Direction="Vertical" Index="1" Caption="Zugehörigkeit" RelativeSize="100" IsNewNode="True">
+                    <LayoutItem Id="Lager_ArtikeLager_ZugehoerigkeitsListe" ViewItem="Lager_ArtikeLager_ZugehoerigkeitsListe" Index="0" RelativeSize="100" IsNewNode="True" />
+                  </LayoutGroup>
+                </TabbedGroup>
+              </LayoutGroup>
+            </TabbedGroup>
+            <LayoutGroup Id="Artikel" Removed="True" />
+          </LayoutGroup>
+          <TabbedGroup Id="Tabs" RelativeSize="59.50854700854701" Removed="True">
+            <LayoutGroup Id="AktionsrabatteListe" RelativeSize="0" Index="0" Caption="Aktionsrabatte Liste" Direction="Horizontal" Removed="True">
+              <LayoutItem Id="AktionsrabatteListe" RelativeSize="100" Removed="True" />
+            </LayoutGroup>
+            <LayoutGroup Id="Lager_ArtikeLager_ZugehoerigkeitsListe" RelativeSize="100" Index="0" Removed="True">
+              <LayoutItem Id="Lager_ArtikeLager_ZugehoerigkeitsListe" RelativeSize="100" />
+            </LayoutGroup>
+            <LayoutGroup Id="LieferantenListe" RelativeSize="100" Index="0" Removed="True">
+              <LayoutItem Id="LieferantenListe" RelativeSize="100" />
+            </LayoutGroup>
+            <LayoutGroup Id="LagerplatzListe" RelativeSize="100" Index="1" Removed="True">
+              <LayoutItem Id="LagerplatzListe" RelativeSize="100" />
+            </LayoutGroup>
+            <LayoutGroup Id="AktionspreiseListe" RelativeSize="100" Removed="True">
+              <LayoutItem Id="AktionspreiseListe" RelativeSize="100" />
+            </LayoutGroup>
+          </TabbedGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <ListView Id="Artikel_Lager_ArtikeLager_ZugehoerigkeitsListe_ListView" NewItemRowPosition="Bottom" AllowEdit="True" ShowDetailView="True">
+      <Columns>
+        <ColumnInfo Id="Artikel" Index="-1" />
+        <ColumnInfo Id="Lager" Index="0" SortIndex="0" SortOrder="Ascending" />
+        <ColumnInfo Id="AnzahlVonArtikelnAufEinenStellplatz" Index="1" />
+        <ColumnInfo Id="StandardLager" Index="2" />
+      </Columns>
+    </ListView>
+    <ListView Id="Artikel_LagerplatzListe_ListView">
+      <Columns>
+        <ColumnInfo Id="Lager" Index="-1" />
+        <ColumnInfo Id="IndexNummer" SortIndex="0" SortOrder="Ascending" Index="0" />
+        <ColumnInfo Id="LagerplatzNummer" SortIndex="-1" SortOrder="None" Index="1" />
+        <ColumnInfo Id="LagerplatzIstGesperrt" Index="4" />
+        <ColumnInfo Id="LagerplatzIstReserviert" Index="5" />
+        <ColumnInfo Id="ReserviertFuerWarenBewegung" Index="6" />
+      </Columns>
+    </ListView>
+    <ListView Id="Artikel_ListView">
+      <Columns>
+        <ColumnInfo Id="AktuellerRabatt" Index="-1" />
+        <ColumnInfo Id="AngewandterRabatt" Index="-1" />
+        <ColumnInfo Id="StandardPreis" Index="-1" />
+        <ColumnInfo Id="Steuersatz" Index="-1" />
+        <ColumnInfo Id="ArtikelGruppe" Index="0" Width="88" SortIndex="0" />
+        <ColumnInfo Id="ArtikelUntergruppe" Index="1" Width="114" SortIndex="1" />
+        <ColumnInfo Id="Bezeichnung" Index="2" Width="93" SortIndex="2" />
+        <ColumnInfo Id="AktuellerPreis" Index="3" Width="118" />
+        <ColumnInfo Id="AnzahlImLager" Index="4" Width="97" />
+        <ColumnInfo Id="AnzahlReserviert" Index="5" Width="105" />
+        <ColumnInfo Id="AnzahlVerfuegbar" Index="6" Width="109" />
+        <ColumnInfo Id="AnzahlFehlmenge" Index="7" Width="107" />
+        <ColumnInfo Id="AnzahlImVersandprozess" Index="8" Width="146" />
+        <ColumnInfo Id="AnzahlBestelltBeimLieferanten" Index="9" Width="173" />
+      </Columns>
+    </ListView>
+    <ListView Id="Artikel_LookupListView">
+      <Columns>
+        <ColumnInfo Id="ArtikelGruppe" PropertyName="ArtikelGruppe" Index="0" Width="88" IsNewNode="True" />
+        <ColumnInfo Id="ArtikelUntergruppe" PropertyName="ArtikelUntergruppe" Index="1" Width="114" IsNewNode="True" />
+        <ColumnInfo Id="Bezeichnung" Index="2" Width="93" />
+        <ColumnInfo Id="AktuellerPreis" PropertyName="AktuellerPreis" Index="3" Width="118" IsNewNode="True" />
+        <ColumnInfo Id="AnzahlVerfuegbar" PropertyName="AnzahlVerfuegbar" Index="4" Width="109" IsNewNode="True" />
+      </Columns>
+    </ListView>
+    <ListView Id="ArtikelGruppe_AktionsRabattListe_ListView">
+      <Columns>
+        <ColumnInfo Id="DarfUeberschriebenWerden" Index="-1" />
+        <ColumnInfo Id="AktionStart" Index="1" />
+        <ColumnInfo Id="AktionEnde" Index="2" />
+        <ColumnInfo Id="Status" Index="3" />
+      </Columns>
+    </ListView>
+    <ListView Id="ArtikelGruppe_ArtikelUntergruppenListe_ListView">
+      <Columns>
+        <ColumnInfo Id="ArtikelGruppe" Index="-1" />
+        <ColumnInfo Id="ArtikelUntergruppenNummer" Index="0" Width="162" SortIndex="0" SortOrder="Ascending" />
+        <ColumnInfo Id="Bezeichnung" Index="1" Width="93" SortIndex="-1" SortOrder="None" />
+        <ColumnInfo Id="Steuersatz" Index="2" Width="72" Caption="Steuersatz (%)" />
+        <ColumnInfo Id="AktuellerRabatt" Index="3" Width="98" Caption="Aktueller Rabatt (%)" />
+        <ColumnInfo Id="AngewandterRabatt" Index="4" Width="121" />
+        <ColumnInfo Id="AnzahlDerProdukte" Index="5" Width="118" />
+      </Columns>
+    </ListView>
+    <DetailView Id="ArtikelGruppe_DetailView">
+      <Items>
+        <PropertyEditor Id="Oid" Removed="True" />
+        <PropertyEditor Id="Steuersatz" Caption="Steuersatz (%)" />
+      </Items>
+      <Layout>
+        <LayoutGroup Id="Main" RelativeSize="100">
+          <LayoutGroup Id="SimpleEditors" RelativeSize="11.004273504273504">
+            <LayoutGroup Id="ArtikelGruppe" RelativeSize="100">
+              <LayoutGroup Id="ArtikelGruppe_col1" RelativeSize="49.944134078212294">
+                <LayoutItem Id="Bezeichnung" RelativeSize="50" />
+                <LayoutItem Id="Steuersatz" Index="1" RelativeSize="50" />
+                <LayoutItem Id="ArtikelgruppenNummer" Removed="True" />
+              </LayoutGroup>
+              <LayoutGroup Id="ArtikelGruppe_col2" RelativeSize="50.055865921787706">
+                <LayoutItem Id="ArtikelgruppenNummer" ViewItem="ArtikelgruppenNummer" Index="0" RelativeSize="50" IsNewNode="True" />
+                <LayoutItem Id="AktuellerRabatt" Index="1" RelativeSize="50" />
+                <LayoutItem Id="AnzahlDerArtikel" Index="2" RelativeSize="36.36363636363637" Removed="True" />
+                <LayoutItem Id="AnzahlDerUntergruppen" Index="2" RelativeSize="21.428571428571427" Removed="True" />
+              </LayoutGroup>
+            </LayoutGroup>
+          </LayoutGroup>
+          <TabbedGroup Id="Tabs" RelativeSize="88.9957264957265">
+            <LayoutGroup Id="ArtikelUntergruppenListe" RelativeSize="100" Caption="Artikel Untergruppen Liste">
+              <LayoutItem Id="ArtikelUntergruppenListe" RelativeSize="92.9471032745592" />
+              <LayoutItem Id="AnzahlDerUntergruppen" ViewItem="AnzahlDerUntergruppen" Index="1" RelativeSize="3.022670025188917" IsNewNode="True" />
+              <LayoutItem Id="AnzahlDerArtikel" ViewItem="AnzahlDerArtikel" Index="2" RelativeSize="4.030226700251889" IsNewNode="True" />
+            </LayoutGroup>
+            <LayoutGroup Id="AktionsRabattListe" RelativeSize="100">
+              <LayoutItem Id="AktionsRabattListe" RelativeSize="100" />
+            </LayoutGroup>
+          </TabbedGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <ListView Id="ArtikelGruppe_ListView">
+      <Columns>
+        <ColumnInfo Id="ArtikelgruppenNummer" Index="0" SortIndex="0" SortOrder="Ascending" Width="145" />
+        <ColumnInfo Id="Bezeichnung" Index="1" SortIndex="-1" SortOrder="None" Width="80" />
+        <ColumnInfo Id="Steuersatz" Width="72" Caption="Steuersatz (%)" />
+        <ColumnInfo Id="AktuellerRabatt" Width="98" Caption="Aktueller Rabatt (%)" />
+        <ColumnInfo Id="AnzahlDerUntergruppen" Width="142" />
+        <ColumnInfo Id="AnzahlDerArtikel" Width="105" />
+      </Columns>
+    </ListView>
+    <ListView Id="ArtikelUntergruppe_AktionsrabattListe_ListView">
+      <Columns>
+        <ColumnInfo Id="AktionStart" Index="1" />
+        <ColumnInfo Id="AktionEnde" Index="2" />
+        <ColumnInfo Id="Status" Index="3" />
+        <ColumnInfo Id="DarfUeberschriebenWerden" Index="4" />
+      </Columns>
+    </ListView>
+    <DetailView Id="ArtikelUntergruppe_DetailView">
+      <Layout>
+        <LayoutGroup Id="Main" RelativeSize="100">
+          <LayoutGroup Id="SimpleEditors" RelativeSize="13.568376068376068">
+            <LayoutGroup Id="ArtikelUntergruppe" RelativeSize="100">
+              <LayoutGroup Id="ArtikelUntergruppe_col1" RelativeSize="49.944134078212294">
+                <LayoutItem Id="Bezeichnung" RelativeSize="36.36363636363637" />
+                <LayoutItem Id="Steuersatz" Index="1" RelativeSize="27.272727272727273" />
+                <LayoutItem Id="AktuellerRabatt" Index="2" RelativeSize="36.36363636363637" />
+                <LayoutItem Id="ArtikelUntergruppenNummer" Removed="True" />
+              </LayoutGroup>
+              <LayoutGroup Id="ArtikelUntergruppe_col2" RelativeSize="50.055865921787706">
+                <LayoutItem Id="ArtikelUntergruppenNummer" ViewItem="ArtikelUntergruppenNummer" Index="0" RelativeSize="36.36363636363637" IsNewNode="True" />
+                <LayoutItem Id="BenutzteGruppenRabatte" Index="1" RelativeSize="27.272727272727273" />
+                <LayoutItem Id="AngewandterRabatt" Index="2" RelativeSize="36.36363636363637" />
+                <LayoutItem Id="AnzahlDerProdukte" Index="3" RelativeSize="28.571428571428573" Removed="True" />
+              </LayoutGroup>
+            </LayoutGroup>
+          </LayoutGroup>
+          <TabbedGroup Id="Tabs" RelativeSize="86.43162393162393">
+            <LayoutGroup Id="ArtikelUntergruppeArtikelListe" RelativeSize="100" Caption="Artikel Untergruppe Artikel Liste">
+              <LayoutItem Id="ArtikelUntergruppeArtikelListe" RelativeSize="95.84415584415585" />
+              <LayoutItem Id="AnzahlDerProdukte" ViewItem="AnzahlDerProdukte" Index="1" RelativeSize="4.1558441558441555" IsNewNode="True" />
+            </LayoutGroup>
+            <LayoutGroup Id="AktionsrabattListe" RelativeSize="100">
+              <LayoutItem Id="AktionsrabattListe" RelativeSize="100" />
+            </LayoutGroup>
+          </TabbedGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <ListView Id="ArtikelUntergruppe_ListView">
+      <Columns>
+        <ColumnInfo Id="ArtikelGruppe" Index="0" />
+        <ColumnInfo Id="ArtikelUntergruppenNummer" Index="1" />
+        <ColumnInfo Id="Bezeichnung" Index="2" />
+      </Columns>
+    </ListView>
+    <ListView Id="Bestellung_BestellungsPositionenListe_ListView" NewItemRowPosition="Bottom" AllowEdit="True">
+      <Columns>
+        <ColumnInfo Id="Positionsnummer" Index="0" SortIndex="0" SortOrder="Ascending" />
+        <ColumnInfo Id="Artikel" Index="1" />
+        <ColumnInfo Id="AnzahlBestellteMenge" Index="2" />
+        <ColumnInfo Id="Zeilenrabatt" Index="3" />
+        <ColumnInfo Id="Artikel_Preis" Index="4" />
+        <ColumnInfo Id="SummeDerPositionNetto_NP" Index="5" />
+        <ColumnInfo Id="Artikel_Steuersatz" Index="6" />
+        <ColumnInfo Id="SummeDerPositionBrutto_NP" Index="7" />
+        <ColumnInfo Id="AnzahlOffeneRestmenge" Index="8" />
+        <ColumnInfo Id="AnzahlGeliefert" Index="9" />
+      </Columns>
+    </ListView>
+    <DetailView Id="Bestellung_DetailView">
+      <Layout>
+        <LayoutGroup Id="Main" RelativeSize="100">
+          <LayoutGroup Id="SimpleEditors" RelativeSize="37.48344370860927">
+            <LayoutGroup Id="Bestellung" RelativeSize="21.908127208480565" Caption="Bestellung" Direction="Horizontal">
+              <LayoutItem Id="Kunde" ViewItem="Kunde" Index="0" RelativeSize="50" IsNewNode="True" Removed="True" />
+              <LayoutGroup Id="Autoe02fe37d-22fa-40fe-80a5-1d056179e1ef" ShowCaption="False" Caption="Autoe02fe37d-22fa-40fe-80a5-1d056179e1ef(5)" Index="1" RelativeSize="50" IsNewNode="True">
+                <LayoutItem Id="BestellDatum" ViewItem="BestellDatum" Index="0" RelativeSize="51.61290322580645" IsNewNode="True" />
+                <LayoutItem Id="Bestellnummer" ViewItem="Bestellnummer" Index="1" RelativeSize="48.38709677419355" IsNewNode="True" />
+              </LayoutGroup>
+              <LayoutItem Id="BestellDatum" Index="1" RelativeSize="48.38709677419355" Removed="True" />
+              <LayoutItem Id="Summenrabatt" Index="1" RelativeSize="27.906976744186046" Removed="True" />
+              <LayoutItem Id="Bestellnummer" Removed="True" />
+            </LayoutGroup>
+            <LayoutGroup Id="Beleg" RelativeSize="78.09187279151944" Direction="Vertical">
+              <LayoutGroup Id="Beleg_col1" RelativeSize="100">
+                <LayoutGroup Id="Auto3cd52618-2a16-4371-914f-860ff748be96" ShowCaption="False" Caption="Auto3cd52618-2a16-4371-914f-860ff748be96(11)" Direction="Horizontal" Index="0" RelativeSize="45.26315789473684" IsNewNode="True">
+                  <LayoutGroup Id="Auto09ff6078-21ba-4dad-883c-7780d33d179f" ShowCaption="False" Caption="Auto09ff6078-21ba-4dad-883c-7780d33d179f(12)" Index="0" RelativeSize="50" IsNewNode="True">
+                    <LayoutItem Id="Kunde_LieferAdresse_Straße" ViewItem="Kunde_LieferAdresse_Straße" Index="0" RelativeSize="37.2093023255814" IsNewNode="True" />
+                    <LayoutItem Id="Kunde_LieferAdresse_Postleitzahl" ViewItem="Kunde_LieferAdresse_Postleitzahl" Index="1" RelativeSize="27.906976744186046" IsNewNode="True" />
+                    <LayoutItem Id="Kunde_LieferAdresse_Ort" ViewItem="Kunde_LieferAdresse_Ort" Index="2" RelativeSize="34.883720930232556" IsNewNode="True" />
+                  </LayoutGroup>
+                  <LayoutGroup Id="Auto964522c3-6c0e-442a-9a73-b9f0e7efd5af" ShowCaption="False" Caption="Auto964522c3-6c0e-442a-9a73-b9f0e7efd5af(16)" Index="1" RelativeSize="50" IsNewNode="True">
+                    <LayoutItem Id="Kunde_RechnungsAdresse_Straße" ViewItem="Kunde_RechnungsAdresse_Straße" Index="0" RelativeSize="37.2093023255814" IsNewNode="True" />
+                    <LayoutItem Id="Kunde_RechnungsAdresse_Postleitzahl" ViewItem="Kunde_RechnungsAdresse_Postleitzahl" Index="1" RelativeSize="27.906976744186046" IsNewNode="True" />
+                    <LayoutItem Id="Kunde_RechnungsAdresse_Ort" ViewItem="Kunde_RechnungsAdresse_Ort" Index="2" RelativeSize="34.883720930232556" IsNewNode="True" />
+                  </LayoutGroup>
+                </LayoutGroup>
+                <LayoutItem Id="Kunde_LieferungZurRechnungsadresse" RelativeSize="12.631578947368421" Index="1" />
+                <LayoutItem Id="Kunde_RechnungsAdresse_Ort" RelativeSize="11.538461538461538" Index="2" Removed="True" />
+                <LayoutItem Id="Lieferort_Straße" ViewItem="Lieferort_Straße" Index="2" RelativeSize="12.631578947368421" IsNewNode="True" Removed="True" />
+                <LayoutItem Id="Lieferort_Postleitzahl" ViewItem="Lieferort_Postleitzahl" Index="3" RelativeSize="12.631578947368421" IsNewNode="True" />
+                <LayoutItem Id="Kunde_RechnungsAdresse_Postleitzahl" RelativeSize="10.344827586206897" Index="4" Removed="True" />
+                <LayoutItem Id="Lieferort_Ort" ViewItem="Lieferort_Ort" Index="4" RelativeSize="16.842105263157894" IsNewNode="True" />
+                <LayoutItem Id="BelegWurdeCommitted" RelativeSize="14.545454545454545" Removed="True" />
+                <LayoutItem Id="Kunde_LieferAdresse_Ort" RelativeSize="10.344827586206897" Removed="True" />
+                <LayoutItem Id="Kunde_LieferAdresse_Postleitzahl" RelativeSize="10.344827586206897" Removed="True" />
+                <LayoutItem Id="Kunde_LieferAdresse_Straße" RelativeSize="9.375" Removed="True" />
+                <LayoutItem Id="Kunde_RechnungsAdresse_Straße" RelativeSize="9.375" Removed="True" />
+              </LayoutGroup>
+              <LayoutGroup Id="Beleg_col2" RelativeSize="50.06765899864682" Caption="Beleg_col2" Removed="True">
+                <LayoutItem Id="Lieferort_Ort" RelativeSize="100" Index="0" Removed="True" />
+                <LayoutItem Id="Lieferort_Postleitzahl" RelativeSize="15.384615384615385" Index="0" Removed="True" />
+                <LayoutItem Id="Lieferort_Bundesland" RelativeSize="61.53846153846154" Removed="True" />
+                <LayoutItem Id="Lieferort_Land" RelativeSize="50" Removed="True" />
+                <LayoutItem Id="Lieferort_Landkreis" RelativeSize="73.07692307692308" Removed="True" />
+                <LayoutItem Id="SummeRechnungsBrutto" RelativeSize="26.923076923076923" Removed="True" />
+                <LayoutItem Id="SummeRechnungsNetto" RelativeSize="38.46153846153846" Removed="True" />
+              </LayoutGroup>
+            </LayoutGroup>
+          </LayoutGroup>
+          <LayoutGroup Id="BestellungsPositionenListe_Group" Direction="Vertical" RelativeSize="62.51655629139073" Caption="Bestellungs Positionen Liste">
+            <LayoutItem Id="BestellungsPositionenListe" RelativeSize="84.51025056947609" />
+            <LayoutGroup Id="Autod82e0548-d808-4788-bb24-6b5b312455bf" ShowCaption="False" Caption="Autod82e0548-d808-4788-bb24-6b5b312455bf(26)" Direction="Horizontal" Index="1" RelativeSize="7.517084282460137" IsNewNode="True">
+              <LayoutItem Id="Summenrabatt" ViewItem="Summenrabatt" Index="0" RelativeSize="50" IsNewNode="True" />
+              <LayoutItem Id="BelegWurdeCommitted" ViewItem="BelegWurdeCommitted" Index="1" RelativeSize="50" IsNewNode="True" />
+            </LayoutGroup>
+            <LayoutGroup Id="Auto954a7131-bb60-4a81-9b92-624f5231133a" ShowCaption="False" Caption="Auto954a7131-bb60-4a81-9b92-624f5231133a(26)" Direction="Horizontal" Index="2" RelativeSize="7.972665148063781" IsNewNode="True">
+              <LayoutItem Id="SummeRechnungsNetto" ViewItem="SummeRechnungsNetto" Index="0" RelativeSize="50" IsNewNode="True" />
+              <LayoutItem Id="SummeRechnungsBrutto" ViewItem="SummeRechnungsBrutto" Index="1" RelativeSize="50" IsNewNode="True" />
+            </LayoutGroup>
+          </LayoutGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <ListView Id="Bestellung_ListView" ShowAutoFilterRow="True">
+      <Columns>
+        <ColumnInfo Id="Summenrabatt" Index="-1" />
+        <ColumnInfo Id="BestellDatum" Index="2" />
+        <ColumnInfo Id="SummeRechnungsBrutto" Index="3" />
+      </Columns>
+    </ListView>
+    <DetailView Id="BestellungsPosition_DetailView">
+      <Items>
+        <PropertyEditor Id="Artikel_Preis" PropertyName="Artikel_Preis" IsNewNode="True" Removed="True" />
+        <PropertyEditor Id="Artikel_Steuersatz" PropertyName="Artikel_Steuersatz" IsNewNode="True" Removed="True" />
+      </Items>
+      <Layout>
+        <LayoutGroup Id="Main" RelativeSize="100">
+          <LayoutGroup Id="SimpleEditors" RelativeSize="100">
+            <LayoutGroup Id="BelegPosition" Index="0" RelativeSize="100">
+              <LayoutGroup Id="BelegPosition_col1" RelativeSize="49.720670391061454" Caption="BelegPosition_col1">
+                <LayoutItem Id="Artikel" RelativeSize="3.5754189944134076" />
+                <LayoutItem Id="AnzahlBestellteMenge" RelativeSize="96.42458100558659" Index="1" Removed="True" />
+                <LayoutItem Id="Zeilenrabatt" ViewItem="Zeilenrabatt" Index="1" RelativeSize="2.6815642458100557" IsNewNode="True" />
+                <LayoutItem Id="Artikel_Preis" ViewItem="Artikel_Preis" Index="2" RelativeSize="2.6815642458100557" Removed="True" />
+                <LayoutItem Id="SummeDerPositionNetto_NP" ViewItem="SummeDerPositionNetto_NP" Index="2" RelativeSize="93.74301675977654" IsNewNode="True" />
+                <LayoutItem Id="AnzahlOffeneRestmenge" Removed="True" />
+                <LayoutItem Id="Artikel_Steuersatz" RelativeSize="2.6815642458100557" Removed="True" />
+              </LayoutGroup>
+              <LayoutGroup Id="BelegPosition_col2" RelativeSize="50.279329608938546">
+                <LayoutItem Id="AnzahlBestellteMenge" ViewItem="AnzahlBestellteMenge" Index="0" RelativeSize="3.5754189944134076" IsNewNode="True" />
+                <LayoutItem Id="Artikel_Preis" ViewItem="Artikel_Preis" Index="1" RelativeSize="2.6815642458100557" IsNewNode="True" />
+                <LayoutItem Id="SummeDerPositionNetto_NP" RelativeSize="2.6815642458100557" Index="1" Removed="True" />
+                <LayoutItem Id="Zeilenrabatt" RelativeSize="2.6815642458100557" Index="1" Removed="True" />
+                <LayoutItem Id="SummeDerPositionBrutto_NP" RelativeSize="93.74301675977654" Index="2" />
+                <LayoutItem Id="AnzahlGeliefert" RelativeSize="3.5754189944134076" Removed="True" />
+                <LayoutItem Id="Positionsnummer" RelativeSize="2.6815642458100557" Removed="True" />
+              </LayoutGroup>
+            </LayoutGroup>
+          </LayoutGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <ListView Id="BestellungsPosition_ListView">
+      <Columns>
+        <ColumnInfo Id="Positionsnummer" Index="0" SortIndex="0" SortOrder="Ascending" />
+        <ColumnInfo Id="Artikel" Index="1" />
+        <ColumnInfo Id="AnzahlBestellteMenge" Index="2" />
+        <ColumnInfo Id="Zeilenrabatt" Index="3" />
+        <ColumnInfo Id="Artikel_Preis" Index="4" />
+        <ColumnInfo Id="Artikel_Steuersatz" Index="5" />
+        <ColumnInfo Id="SummeDerPositionNetto_NP" Index="6" />
+        <ColumnInfo Id="SummeDerPositionBrutto_NP" Index="7" />
+        <ColumnInfo Id="AnzahlOffeneRestmenge" Index="8" />
+        <ColumnInfo Id="AnzahlGeliefert" Index="9" />
+      </Columns>
+    </ListView>
+    <ListView Id="Kunde_ListView">
+      <Columns>
+        <ColumnInfo Id="Kundennummer" Index="0" Width="94" SortIndex="0" SortOrder="Ascending" />
+        <ColumnInfo Id="Name" Index="1" Width="60" SortIndex="-1" SortOrder="None" />
+        <ColumnInfo Id="VollerName" Index="2" Width="71" />
+        <ColumnInfo Id="AnzahlOffenerBestellungen" Index="3" Width="157" />
+      </Columns>
+    </ListView>
+    <DetailView Id="Lager_ArtikeLager_Zugehoerigkeit_DetailView">
+      <Items>
+        <PropertyEditor Id="Lager" PropertyName="Lager" IsNewNode="True" />
+      </Items>
+      <Layout>
+        <LayoutGroup Id="Main" RelativeSize="100">
+          <LayoutGroup Id="SimpleEditors" RelativeSize="100">
+            <LayoutGroup Id="Lager_ArtikeLager_Zugehoerigkeit" RelativeSize="100" Caption="Lager_ArtikeLager_Zugehoerigkeit" Direction="Horizontal">
+              <LayoutGroup Id="Auto7801f4df-6afa-43ec-8155-636009f531be" ShowCaption="False" Caption="" Index="0" RelativeSize="49.94913530010173" IsNewNode="True">
+                <LayoutItem Id="Lager" ViewItem="Lager" Index="0" RelativeSize="4.23841059602649" IsNewNode="True" />
+                <LayoutItem Id="AnzahlVonArtikelnAufEinenStellplatz" ViewItem="AnzahlVonArtikelnAufEinenStellplatz" Index="1" RelativeSize="95.76158940397352" IsNewNode="True" />
+              </LayoutGroup>
+              <LayoutItem Id="AnzahlVonArtikelnAufEinenStellplatz" Index="1" RelativeSize="3.1788079470198674" Removed="True" />
+              <LayoutGroup Id="Auto831d8022-2e74-4cd2-b872-3d2afa7011ac" ShowCaption="False" Caption="" Index="1" RelativeSize="50.05086469989827" IsNewNode="True">
+                <LayoutItem Id="Item1" Index="0" RelativeSize="4.23841059602649" IsNewNode="True" />
+                <LayoutItem Id="StandardLager" ViewItem="StandardLager" Index="1" RelativeSize="95.76158940397352" IsNewNode="True" />
+              </LayoutGroup>
+              <LayoutItem Id="StandardLager" Index="2" RelativeSize="92.58278145695364" Removed="True" />
+            </LayoutGroup>
+          </LayoutGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <DetailView Id="Lager_DetailView">
+      <Layout>
+        <LayoutGroup Id="Main" RelativeSize="100">
+          <LayoutGroup Id="SimpleEditors" RelativeSize="20.794701986754966">
+            <TabbedGroup Id="Item1" CaptionLocation="Top" Index="0" RelativeSize="100" IsNewNode="True">
+              <LayoutGroup Id="Lager" ShowCaption="True" Direction="Vertical" Index="0" RelativeSize="100" Caption="Übersicht" IsNewNode="True">
+                <LayoutGroup Id="Lager_col1" ShowCaption="False" Index="0" RelativeSize="100" Caption="Lager_col1" Direction="Horizontal" IsNewNode="True">
+                  <LayoutGroup Id="Auto8ef0a030-f917-4cce-8e13-4f2eedb79220" ShowCaption="False" Caption="Auto8ef0a030-f917-4cce-8e13-4f2eedb79220(6)" Index="0" RelativeSize="49.89224137931034" IsNewNode="True">
+                    <LayoutItem Id="Bezeichnung" ViewItem="Bezeichnung" Index="0" RelativeSize="28.571428571428573" IsNewNode="True" />
+                    <LayoutItem Id="LeereStellplaetze" ViewItem="LeereStellplaetze" Index="1" RelativeSize="21.428571428571427" IsNewNode="True" />
+                    <LayoutItem Id="BelegungInProzent" ViewItem="BelegungInProzent" Index="2" RelativeSize="50" IsNewNode="True" />
+                  </LayoutGroup>
+                  <LayoutGroup Id="Auto1bb29125-f176-4aca-9832-09228753b4a0" ShowCaption="False" Caption="Auto1bb29125-f176-4aca-9832-09228753b4a0(10)" Index="1" RelativeSize="50.10775862068966" IsNewNode="True">
+                    <LayoutItem Id="LagerKuerzel" ViewItem="LagerKuerzel" Index="0" RelativeSize="28.571428571428573" IsNewNode="True" />
+                    <LayoutItem Id="BelegteStellplaetze" ViewItem="BelegteStellplaetze" Index="1" RelativeSize="21.428571428571427" IsNewNode="True" />
+                    <LayoutItem Id="Item3" Index="2" RelativeSize="50" IsNewNode="True" />
+                  </LayoutGroup>
+                </LayoutGroup>
+              </LayoutGroup>
+              <LayoutGroup Id="Item2" ShowCaption="True" CaptionLocation="Top" Direction="Horizontal" Index="1" Caption="Struktur" RelativeSize="100" IsNewNode="True">
+                <LayoutGroup Id="Auto8ba525be-dae9-4e09-ad83-846d85b9c565" ShowCaption="False" Caption="Auto8ba525be-dae9-4e09-ad83-846d85b9c565(15)" Index="0" RelativeSize="49.89224137931034" IsNewNode="True">
+                  <LayoutItem Id="AnzahlDerReihen" ViewItem="AnzahlDerReihen" Index="0" RelativeSize="28.571428571428573" IsNewNode="True" />
+                  <LayoutItem Id="AnzahlDerEbenenInEinenRegal" ViewItem="AnzahlDerEbenenInEinenRegal" Index="1" RelativeSize="21.428571428571427" IsNewNode="True" />
+                  <LayoutItem Id="Wareneingang" ViewItem="Wareneingang" Index="2" RelativeSize="21.428571428571427" IsNewNode="True" />
+                  <LayoutItem Id="Warenausgang" ViewItem="Warenausgang" Index="3" RelativeSize="28.571428571428573" IsNewNode="True" />
+                </LayoutGroup>
+                <LayoutGroup Id="Auto080f2120-1650-4692-b6f2-05bf5a517270" ShowCaption="False" Caption="Auto080f2120-1650-4692-b6f2-05bf5a517270(20)" Index="1" RelativeSize="50.10775862068966" IsNewNode="True">
+                  <LayoutItem Id="AnzahlDerRegaleInEinerReihe" ViewItem="AnzahlDerRegaleInEinerReihe" Index="0" RelativeSize="28.571428571428573" IsNewNode="True" />
+                  <LayoutItem Id="AnzahlDerStellplaetzeInEinerEbene" ViewItem="AnzahlDerStellplaetzeInEinerEbene" Index="1" RelativeSize="21.428571428571427" IsNewNode="True" />
+                  <LayoutItem Id="AnzahlDerStellplaetzeImLager" ViewItem="AnzahlDerStellplaetzeImLager" Index="2" RelativeSize="50" IsNewNode="True" />
+                </LayoutGroup>
+              </LayoutGroup>
+            </TabbedGroup>
+            <LayoutGroup Id="Lager" Removed="True" />
+          </LayoutGroup>
+          <TabbedGroup Id="Tabs" RelativeSize="79.20529801324503">
+            <LayoutGroup Id="LagerplatzListe" RelativeSize="100">
+              <LayoutItem Id="LagerplatzListe" RelativeSize="100" />
+            </LayoutGroup>
+            <LayoutGroup Id="Lager_ArtikeLager_ZugehoerigkeitsListe" RelativeSize="100">
+              <LayoutItem Id="Lager_ArtikeLager_ZugehoerigkeitsListe" RelativeSize="100" />
+            </LayoutGroup>
+          </TabbedGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <ListView Id="Lager_Lager_ArtikeLager_ZugehoerigkeitsListe_ListView" ShowDetailView="True" AllowEdit="True" NewItemRowPosition="Bottom">
+      <Columns>
+        <ColumnInfo Id="Lager" Index="-1" />
+        <ColumnInfo Id="Artikel" Index="0" SortIndex="0" SortOrder="Ascending" />
+        <ColumnInfo Id="AnzahlVonArtikelnAufEinenStellplatz" Index="1" />
+        <ColumnInfo Id="StandardLager" Index="2" />
+      </Columns>
+    </ListView>
+    <ListView Id="Lager_LagerplatzListe_ListView">
+      <Columns>
+        <ColumnInfo Id="IndexNummer" Index="0" SortIndex="-1" SortOrder="None" Width="103" />
+        <ColumnInfo Id="LagerplatzNummer" Index="1" SortIndex="-1" SortOrder="None" Width="112" />
+        <ColumnInfo Id="Artikel" Width="50" SortIndex="0" SortOrder="Descending" />
+        <ColumnInfo Id="AnzahlDerArtikel" Width="105" />
+        <ColumnInfo Id="Anzahl_Reserviert" Width="108" />
+        <ColumnInfo Id="LagerplatzIstGesperrt" Width="131" />
+        <ColumnInfo Id="LagerplatzIstReserviert" Width="139" />
+        <ColumnInfo Id="ReserviertFuerWarenBewegung" Width="183" />
+      </Columns>
+    </ListView>
+    <ListView Id="Lager_ListView">
+      <Columns>
+        <ColumnInfo Id="AnzahlDerEbenenInEinenRegal" Width="183" Index="-1" />
+        <ColumnInfo Id="AnzahlDerRegaleInEinerReihe" Width="178" Index="-1" />
+        <ColumnInfo Id="AnzahlDerReihen" Width="108" Index="-1" />
+        <ColumnInfo Id="AnzahlDerStellplaetzeInEinerEbene" Width="203" Index="-1" />
+        <ColumnInfo Id="Bezeichnung" Width="93" />
+        <ColumnInfo Id="LagerKuerzel" Width="85" />
+        <ColumnInfo Id="LeereStellplaetze" Width="105" Index="2" />
+        <ColumnInfo Id="BelegteStellplaetze" Width="114" Index="3" />
+        <ColumnInfo Id="BelegungInProzent" Width="117" Index="4" />
+        <ColumnInfo Id="AnzahlDerStellplaetzeImLager" Width="175" Index="5" />
+        <ColumnInfo Id="Wareneingang" Width="90" Index="6" />
+        <ColumnInfo Id="Warenausgang" Width="93" Index="7" />
+      </Columns>
+    </ListView>
+    <ListView Id="Lieferant_ListView">
+      <Columns>
+        <ColumnInfo Id="Lieferantennummer" Index="0" SortIndex="0" SortOrder="Ascending" Width="126" />
+        <ColumnInfo Id="Name" Index="1" SortIndex="-1" SortOrder="None" Width="47" />
+        <ColumnInfo Id="Telefonnummer" Index="2" />
+        <ColumnInfo Id="Email" Index="3" />
+      </Columns>
+    </ListView>
+    <DetailView Id="LieferantenLieferung_DetailView">
+      <Items>
+        <PropertyEditor Id="Lieferant" PropertyName="Lieferant" IsNewNode="True" />
+        <PropertyEditor Id="Oid" Removed="True" />
+      </Items>
+      <Layout>
+        <LayoutGroup Id="Main" RelativeSize="100">
+          <LayoutGroup Id="SimpleEditors" RelativeSize="6.6239316239316235">
+            <LayoutGroup Id="LieferantenLieferung" RelativeSize="100" Caption="LieferantenLieferung" Direction="Vertical">
+              <LayoutGroup Id="Auto255f89fa-d755-4960-8c61-abd76fa51be4" ShowCaption="False" Caption="Auto255f89fa-d755-4960-8c61-abd76fa51be4(4)" Direction="Horizontal" Index="0" RelativeSize="100" IsNewNode="True">
+                <LayoutGroup Id="Auto49431121-8241-461d-ae00-6bdd027f605f" ShowCaption="False" Caption="Auto49431121-8241-461d-ae00-6bdd027f605f(5)" Index="0" RelativeSize="50" IsNewNode="True">
+                  <LayoutItem Id="Lieferant" ViewItem="Lieferant" Index="0" RelativeSize="51.61290322580645" IsNewNode="True" />
+                  <LayoutItem Id="Wareneingang_Lager" ViewItem="Wareneingang_Lager" Index="1" RelativeSize="48.38709677419355" IsNewNode="True" />
+                </LayoutGroup>
+                <LayoutGroup Id="Auto5c1c15f5-4c8b-446f-9920-fcbe470f6297" ShowCaption="False" Caption="" Index="1" RelativeSize="50" IsNewNode="True">
+                  <LayoutItem Id="Lieferdatum" ViewItem="Lieferdatum" Index="0" RelativeSize="51.61290322580645" IsNewNode="True" />
+                  <LayoutItem Id="LieferantenLieferscheinnummer" ViewItem="LieferantenLieferscheinnummer" Index="1" RelativeSize="48.38709677419355" IsNewNode="True" />
+                </LayoutGroup>
+              </LayoutGroup>
+              <LayoutItem Id="Wareneingang_Lager" ViewItem="Wareneingang_Lager" Index="0" RelativeSize="50" Removed="True" />
+              <LayoutItem Id="LieferantenLieferscheinnummer" ViewItem="LieferantenLieferscheinnummer" Index="1" RelativeSize="32.608695652173914" Removed="True" />
+              <LayoutItem Id="BelegWurdeCommitted" Removed="True" />
+              <LayoutItem Id="Lieferdatum" RelativeSize="34.883720930232556" Removed="True" />
+            </LayoutGroup>
+            <LayoutGroup Id="XPObject" Caption="Oid" RelativeSize="83.55437665782493" Removed="True">
+              <LayoutItem Id="Oid" Removed="True" />
+            </LayoutGroup>
+          </LayoutGroup>
+          <LayoutGroup Id="LieferantenLieferungPositionenListe_Group" Direction="Vertical" RelativeSize="93.37606837606837" Caption="Lieferanten Lieferung Positionen Liste">
+            <LayoutItem Id="LieferantenLieferungPositionenListe" RelativeSize="96.19500594530321" />
+            <LayoutItem Id="BelegWurdeCommitted" ViewItem="BelegWurdeCommitted" Index="1" RelativeSize="3.8049940546967895" IsNewNode="True" />
+          </LayoutGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <DetailView Id="LieferantenLieferungPosition_DetailView">
+      <Layout>
+        <LayoutGroup Id="Main" RelativeSize="100">
+          <LayoutGroup Id="SimpleEditors" RelativeSize="100">
+            <LayoutGroup Id="LieferantenLieferungPosition" RelativeSize="100" Direction="Horizontal">
+              <LayoutItem Id="Artikel" RelativeSize="49.93446920052425" />
+              <LayoutItem Id="Liefermenge" RelativeSize="50.06553079947575" />
+              <LayoutItem Id="Positionsnummer" Removed="True" />
+            </LayoutGroup>
+          </LayoutGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <ListView Id="LieferantenLieferungPosition_ListView">
+      <Columns>
+        <ColumnInfo Id="Positionsnummer" Index="0" SortIndex="0" SortOrder="Ascending" />
+        <ColumnInfo Id="Artikel" Index="1" />
+        <ColumnInfo Id="Liefermenge" Index="2" />
+      </Columns>
+    </ListView>
+    <DetailView Id="Waren_Eingang_DetailView">
+      <Items>
+        <PropertyEditor Id="Notizen" RowCount="10" />
+      </Items>
+      <Layout>
+        <LayoutGroup Id="Main" RelativeSize="100">
+          <LayoutGroup Id="SimpleEditors" RelativeSize="100">
+            <LayoutGroup Id="Waren_Eingang" RelativeSize="18.055555555555557" Direction="Vertical">
+              <LayoutGroup Id="Waren_Eingang_col1" RelativeSize="100">
+                <LayoutGroup Id="Autoa989ce84-1769-41d9-90a4-43a1fb810e60" ShowCaption="False" Caption="Autoa989ce84-1769-41d9-90a4-43a1fb810e60(5)" Direction="Horizontal" Index="0" RelativeSize="25.735294117647058" IsNewNode="True">
+                  <LayoutItem Id="Lieferant" ViewItem="Lieferant" Index="0" RelativeSize="49.944382647385986" IsNewNode="True" />
+                  <LayoutItem Id="LieferantenLieferung" ViewItem="LieferantenLieferung" Index="1" RelativeSize="50.055617352614014" IsNewNode="True" />
+                </LayoutGroup>
+                <LayoutItem Id="LieferantenLieferung" ViewItem="LieferantenLieferung" Index="0" RelativeSize="18.07909604519774" Removed="True" />
+                <LayoutGroup Id="Auto7a4b4e11-37ee-4a9f-ba05-50cd7acc5eb9" ShowCaption="False" Caption="Auto7a4b4e11-37ee-4a9f-ba05-50cd7acc5eb9(8)" Index="1" RelativeSize="74.26470588235294" IsNewNode="True">
+                  <LayoutGroup Id="Auto632696cf-a9c6-476e-8057-77837f0d2802" ShowCaption="False" Caption="Auto632696cf-a9c6-476e-8057-77837f0d2802(9)" Direction="Horizontal" Index="0" RelativeSize="32.67326732673267" IsNewNode="True">
+                    <LayoutItem Id="Positionsnummer" ViewItem="Positionsnummer" Index="0" RelativeSize="49.944382647385986" IsNewNode="True" />
+                    <LayoutItem Id="Artikel" ViewItem="Artikel" Index="1" RelativeSize="50.055617352614014" IsNewNode="True" />
+                  </LayoutGroup>
+                  <LayoutGroup Id="Auto2cef5a80-be0f-4cac-97c7-5befe0781393" ShowCaption="False" Caption="Auto2cef5a80-be0f-4cac-97c7-5befe0781393(12)" Index="1" RelativeSize="67.32673267326733" IsNewNode="True">
+                    <LayoutGroup Id="Autoaafdc082-b343-48f0-bb34-f99a4a016860" ShowCaption="False" Caption="Autoaafdc082-b343-48f0-bb34-f99a4a016860(13)" Direction="Horizontal" Index="0" RelativeSize="48.529411764705884" IsNewNode="True">
+                      <LayoutItem Id="Liefermenge_Soll" ViewItem="Liefermenge_Soll" Index="0" RelativeSize="49.944382647385986" IsNewNode="True" />
+                      <LayoutItem Id="Liefermenge_Ist" ViewItem="Liefermenge_Ist" Index="1" RelativeSize="50.055617352614014" IsNewNode="True" />
+                    </LayoutGroup>
+                    <LayoutGroup Id="Auto8c680387-c1c9-49aa-9914-827844c90f1a" ShowCaption="False" Caption="Auto8c680387-c1c9-49aa-9914-827844c90f1a(16)" Direction="Horizontal" Index="1" RelativeSize="51.470588235294116" IsNewNode="True">
+                      <LayoutItem Id="WareIstVollstaendig" ViewItem="WareIstVollstaendig" Index="0" RelativeSize="33.370411568409345" IsNewNode="True" />
+                      <LayoutItem Id="WareIstUnbeschaedigt" ViewItem="WareIstUnbeschaedigt" Index="1" RelativeSize="33.25917686318131" IsNewNode="True" />
+                      <LayoutItem Id="ZumEinlagernFreigeben" ViewItem="ZumEinlagernFreigeben" Index="2" RelativeSize="33.370411568409345" IsNewNode="True" />
+                    </LayoutGroup>
+                  </LayoutGroup>
+                </LayoutGroup>
+                <LayoutItem Id="Liefermenge_Soll" RelativeSize="13.559322033898304" Index="1" Removed="True" />
+                <LayoutItem Id="Positionsnummer" RelativeSize="11.940298507462687" Index="1" Removed="True" />
+                <LayoutItem Id="Wareneingang_Lager" RelativeSize="15" Index="1" Removed="True" />
+                <LayoutItem Id="Artikel" RelativeSize="17.647058823529413" Index="2" Removed="True" />
+                <LayoutItem Id="Lieferant" RelativeSize="15" Removed="True" />
+              </LayoutGroup>
+              <LayoutGroup Id="Waren_Eingang_col2" RelativeSize="25.3615127919911" Caption="Waren_Eingang_col2" Removed="True">
+                <LayoutItem Id="ZumEinlagernFreigeben" RelativeSize="100" Index="0" Removed="True" />
+                <LayoutItem Id="Liefermenge_Ist" RelativeSize="21.428571428571427" Index="2" Removed="True" />
+                <LayoutItem Id="WareIstUnbeschaedigt" RelativeSize="17.647058823529413" Index="3" Removed="True" />
+                <LayoutItem Id="WareIstVollstaendig" RelativeSize="17.647058823529413" Index="3" Removed="True" />
+                <LayoutItem Id="Notizen" Removed="True" />
+              </LayoutGroup>
+            </LayoutGroup>
+            <LayoutItem Id="Notizen" ViewItem="Notizen" Index="1" RelativeSize="81.94444444444444" IsNewNode="True" />
+          </LayoutGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <ListView Id="Waren_Eingang_ListView" IsGroupPanelVisible="True" FilterEnabled="True" Filter="[ZumEinlagernFreigeben] = False">
+      <Columns>
+        <ColumnInfo Id="Notizen" Index="-1" />
+        <ColumnInfo Id="Positionsnummer" SortIndex="-1" SortOrder="None" Width="113" Index="0" />
+        <ColumnInfo Id="ZumEinlagernFreigeben" Index="1" SortOrder="Ascending" GroupIndex="0" />
+        <ColumnInfo Id="Lieferant" Width="63" Index="2" />
+        <ColumnInfo Id="LieferantenLieferung" SortOrder="Ascending" GroupIndex="-1" Index="3" Width="136" SortIndex="0" />
+        <ColumnInfo Id="Wareneingang_Lager" Width="123" Index="4" />
+        <ColumnInfo Id="Artikel" Index="5" Width="50" />
+        <ColumnInfo Id="Liefermenge_Soll" Width="101" Index="6" />
+        <ColumnInfo Id="Liefermenge_Ist" Width="98" Index="7" />
+        <ColumnInfo Id="WareIstVollstaendig" Index="8" Width="122" />
+        <ColumnInfo Id="WareIstUnbeschaedigt" Index="9" Width="136" />
+      </Columns>
+    </ListView>
+  </Views>
+</Application>

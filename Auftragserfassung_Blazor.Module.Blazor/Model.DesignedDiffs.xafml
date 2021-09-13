@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <SchemaModules>
+    <SchemaModule Name="SystemModule" Version="21.1.4.0" IsNewNode="True" />
+  </SchemaModules>
+  <Views>
+    <ListView Id="Artikel_ListView" AllowEdit="True" NewItemRowPosition="Bottom" />
+    <ListView Id="Artikel_LookupListView" ShowFindPanel="True" ShowAutoFilterRow="True" />
+    <ListView Id="BestellungsPosition_LookupListView">
+      <Columns>
+        <ColumnInfo Id="Bestellung" Width="69" />
+        <ColumnInfo Id="ZugehörigeBestellungWurdeCommitted" Width="215" />
+        <ColumnInfo Id="PositionIstVollständig" Width="127" />
+      </Columns>
+    </ListView>
+  </Views>
+</Application>
