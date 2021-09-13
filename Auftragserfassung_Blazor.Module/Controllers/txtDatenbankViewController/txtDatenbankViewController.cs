@@ -37,7 +37,7 @@ namespace Auftragserfassung_Blazor.Module.Controllers
             ParametrizedAction testParametrizedAction = new ParametrizedAction(this, "txtDatenbankViewController", PredefinedCategory.Edit, typeof(int));
             testParametrizedAction.TargetViewType = ViewType.ListView;
             //testParametrizedAction.Id = "zufällige" + GetType().Name;
-            //Test
+            //Test2
 
             testParametrizedAction.Id = GetType().Name;
             

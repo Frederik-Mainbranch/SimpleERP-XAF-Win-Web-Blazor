@@ -31,7 +31,7 @@ namespace Auftragserfassung_Blazor.Module.Helpers
         //Bernd\r\n
         //Christoph\r\n
         //Beim letzten Eintrag ist das \r\n optional (wird automatisch entfernt)
-        //Sollte die letzte Zeile leer sein, wird diese automatisch entfernt
+        //Sollte die letzte Zeile leer sein, wird diese automatisch entfernt.
 
         Random zufälligeZahl = new Random();
         public string[] ZufälligerWertundSeineZeilennummer(string imputTxtListe)
